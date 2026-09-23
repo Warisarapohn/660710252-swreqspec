@@ -51,3 +51,22 @@
 - AC ที่ทดสอบยากที่สุดในสภาพแวดล้อมนักศึกษา: AC-BKG-05 เนื่องจากต้องวัด p95 ภายใต้ 200 concurrent users และต้องมีความเสถียรของเครื่องทดสอบ โดยแนะนำให้ทำแบบสั้นๆ ดังนี้: ใช้ script ยิง GET /slots แบบ concurrent 200 requests, บันทึก latency, จัดเก็บผลเป็น p95 และตรวจว่าต่ำกว่า 2 วินาที; ถ้าจำเป็นให้ลดขนาด dataset ให้พอเหมาะเพื่อให้ test reproducible
 
 ---
+
+## 2026-09-23 00:15 คำสั่ง: /implement T-01
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/__init__.py, backend/app/db/__init__.py, backend/app/db/models.py, backend/app/db/session.py, backend/app/db/migrations/001_init.py, backend/tests/conftest.py, backend/tests/test_T01_schema.py
+
+### ผลการทดสอบ
+- รัน: `cd backend && pytest tests/test_T01_schema.py -q`
+- ผล: 2 passed in 0.02s
+
+### Constraint ที่ทำให้เป็นจริง
+- CON-TECH-01: engine ถูกตั้งค่าให้ใช้ PostgreSQL-compatible SQLAlchemy model และโครงสร้าง schema นำไปสู่ฐานข้อมูลเชิงสัมพันธ์ที่สอดคล้องกับมาตรฐานโรงพยาบาล
+- DOM-PDPA-01: `audit_logs` ถูกสร้างไว้ด้วย `actor_id`, `action`, `hn`, `accessed_at` ตามข้อกำหนด
+- IF-HIS-01: `bookings` เก็บเฉพาะ `hn` และไม่มีคอลัมน์ `national_id`
+
+### สิ่งที่เกือบต้องเดาแต่ถามแทน
+- ไม่ได้มีความจำเป็นต้องถามเพิ่ม เพราะ spec และ plan ระบุชัดเจนว่าต้องใช้ PostgreSQL, audit log, และไม่เก็บเลขบัตรประชาชนใน bookings
+
+---
