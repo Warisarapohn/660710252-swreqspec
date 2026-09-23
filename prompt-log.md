@@ -70,3 +70,21 @@
 - ไม่ได้มีความจำเป็นต้องถามเพิ่ม เพราะ spec และ plan ระบุชัดเจนว่าต้องใช้ PostgreSQL, audit log, และไม่เก็บเลขบัตรประชาชนใน bookings
 
 ---
+
+## 2026-09-23 08:35 คำสั่ง: /implement T-10
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง/แก้: frontend/src/App.jsx, frontend/src/pages/SlotPicker.jsx, frontend/src/__tests__/T10_slotpicker.test.jsx
+
+### ผลการทดสอบ
+- รัน: `cd frontend && npm test -- --run src/__tests__/T10_slotpicker.test.jsx`
+- ผล: 1 passed in 1.30s
+
+### Constraint ที่ทำให้เป็นจริง
+- FR-BKG-01: หน้าเลือกแพ็กเกจและเวลาสามารถแสดงช่วงว่างจาก GET /slots ได้
+- FR-BKG-06: เมื่อเปลี่ยนแพ็กเกจ ระบบเรียก API ใหม่เพื่อคำนวณช่วงเวลาใหม่ตามแพ็กเกจที่เลือก
+
+### สิ่งที่เกือบต้องเดาแต่ถามแทน
+- ไม่ได้ต้องเดาเพิ่ม เพราะ requirement ระบุชัดเจนว่า task นี้ต้องทำหน้าเลือกแพ็กเกจและช่วงเวลาแบบเรียก API ตามแพ็กเกจที่เลือก
+
+---
