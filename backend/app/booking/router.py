@@ -32,10 +32,3 @@ def create_booking(req: BookingRequest, hn: str = Depends(get_verified_hn), db: 
     return {"booking_id": booking.id, "slot_id": booking.slot_id, "queue_no": booking.queue_no}
 
 
-@router.delete("/bookings/{booking_id}", status_code=204)
-def cancel_booking(booking_id: int, hn: str = Depends(get_verified_hn), db: Session = Depends(get_db)):
-    """ยกเลิกการจอง เผื่อผู้ใช้กดจองผิด (FR-BKG-04)"""
-    try:
-        service.cancel_booking(db, booking_id, hn)
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))

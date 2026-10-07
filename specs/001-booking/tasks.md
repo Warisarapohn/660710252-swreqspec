@@ -84,7 +84,7 @@ Spec ID: SPEC-BKG-001 (Draft v2) | อ้างอิง: plan.md v1 | สร้
 - ไฟล์ที่แตะ: frontend/src/pages/SlotPicker.jsx, frontend/src/App.jsx, frontend/src/__tests__/SlotPicker.test.jsx
 - ต้องทำหลัง: ไม่มี (ใช้ API จำลอง)
 - เสร็จเมื่อ: test หน้าจอ: เปลี่ยนแพ็กเกจแล้วรายการช่วงเวลาเปลี่ยนตาม
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-11 หน้าจอยืนยัน และแจ้ง "ช่วงเวลาเต็ม" พร้อม 3 ตัวเลือก
 - รองรับ: FR-BKG-03
@@ -92,7 +92,7 @@ Spec ID: SPEC-BKG-001 (Draft v2) | อ้างอิง: plan.md v1 | สร้
 - ไฟล์ที่แตะ: frontend/src/pages/ConfirmBooking.jsx, frontend/src/__tests__/AC-BKG-03.test.jsx
 - ต้องทำหลัง: T-10
 - เสร็จเมื่อ: AC-BKG-03.test.jsx ผ่าน
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ รอทีมตรวจ
 
 ### T-12 ต่อหน้าจอกับ API จริง
 - รองรับ: FR-BKG-01, FR-BKG-03

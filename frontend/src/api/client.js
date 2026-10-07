@@ -17,4 +17,9 @@ export const api = {
     })
     return { status: res.status, body: await res.json() }
   },
+  // ยกเลิกการจอง (เพิ่มตอนทำ T-11 เพื่อให้ปุ่มยกเลิกใช้งานได้)
+  async cancelBooking({ bookingId }) {
+    const res = await fetch(`${BASE}/bookings/${bookingId}`, { method: 'DELETE' })
+    return { status: res.status }
+  },
 }

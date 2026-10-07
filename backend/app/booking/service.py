@@ -39,12 +39,3 @@ def create_booking(db: Session, hn: str, slot_id: int) -> Booking:
     return booking
 
 
-def cancel_booking(db: Session, booking_id: int, hn: str) -> None:
-    """ยกเลิกการจอง และคืนที่นั่งให้ช่วงเวลานั้น (FR-BKG-04)"""
-    booking = db.get(Booking, booking_id)
-    if booking is None or booking.hn != hn:
-        raise ValueError("ไม่พบการจอง")
-    slot = db.get(Slot, booking.slot_id)
-    slot.remaining += 1
-    booking.status = "CANCELLED"
-    db.commit()
