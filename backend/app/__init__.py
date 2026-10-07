@@ -1,1 +1,0 @@
-"""Booking application package."""

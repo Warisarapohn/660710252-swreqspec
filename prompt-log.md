@@ -1,90 +1,46 @@
 # Prompt log
 
-บันทึกทุกครั้งที่ใช้ AI กับ repo นี้ เขียนต่อท้ายเรื่อย ๆ ไม่ต้องลบของเก่า
+บันทึกทุกครั้งที่ใช้ AI กับ repo นี้ เขียนต่อท้ายเรื่อย ๆ ไม่ลบของเก่า
 
 ---
 
-## 2026-09-16 15:00 คำสั่ง: /clarify
+## 2569-09-23 13.40 คำสั่ง: /tasks specs/001-booking/spec.md
 
-- เครื่องมือ: Copilot ใน Codespaces
-- ไฟล์: specs/001-booking/spec.md (v1)
+- เครื่องมือ: Copilot ใน Codespaces (Agent, Auto)
+- ผลลัพธ์: specs/001-booking/tasks.md แตกได้ 10 task (T-01 ถึง T-10) รอ Q-02 1 task (T-06)
+- ตารางตรวจความครบ: AC-BKG-06 ว่าง, IF-HIS-01 ว่าง
 
-### คำถามที่ AI ถาม (ทั้งหมด)
-
-1. ช่วงเวลาใกล้เคียง 3 ตัวเลือกควรพิจารณาเฉพาะวันเดียวกัน หรือรวมวันถัดไปด้วย?
-2. "คิวที่ยังไม่ได้ใช้ในวันเดียวกัน" ควรหมายถึงสถานะใดบ้าง?
-3. เมื่อส่งข้อความยืนยันไม่สำเร็จ ระบบควรเริ่มทำ retry ทันทีเมื่อใด และ retry มีจำนวนหรือช่วงเวลาที่กำหนดชัดหรือไม่?
-4. "ยืนยันภายใน 3 นาที" ใน Goal และ NFR-USE-01 ควรเริ่มนับจากเวลาใดของกระบวนการจอง?
-5. เมื่อผู้ใช้เปลี่ยนแพ็กเกจระหว่างเลือกเวลา ระบบควรล้างค่าเวลาที่เลือกเดิมโดยอัตโนมัติ หรือให้คงค่าเดิมจนกว่าจะเลือกใหม่?
-6. "ช่วงเวลาเต็ม" ควรถือว่าเต็มเมื่อจำนวนที่นั่งคงเหลือเท่ากับ 0 หรือเมื่อเกิด race condition ระหว่างการยืนยันพร้อมกัน?
-7. หมายเลขคิวควรเริ่มนับใหม่ทุกวัน หรือไหลต่อเนื่องตลอดทั้งรอบการให้บริการ?
-
-### คำตอบของทีมและเหตุผล
-
-1. หมายเลขคิวเริ่มนับใหม่ทุกวันเพราะจะได้รู้ว่าในแต่ละวันคิวเท่าไรและจะได้ไม่สับสน
-2. ระบบจะ retry ส่งข้อความยืนยันไม่สำเร็จสูงสุด 3 ครั้ง
-
-### สิ่งที่แก้ใน spec.md (v1 เป็น v2)
-
-- เปลี่ยน Status จาก Draft v1 เป็น Draft v2 และอัปเดตวันที่เป็น 2569-09-16
-- ระบุค่าเริ่มต้นของหมายเลขคิวเป็นนับใหม่ทุกวันใน Assumptions
-- ระบุว่าการ retry ส่งข้อความยืนยันสูงสุด 3 ครั้ง ใน FR-BKG-05 และ NFR-REL-02
-- อัปเดตข้อความสรุปไว้เพื่อให้สอดคล้องกับคำตอบของทีม
+### แก้รอบที่ 1
+- ทีมสั่ง: เพิ่ม task สำหรับ AC-BKG-06 และ IF-HIS-01 แล้วอัปเดตตารางท้ายไฟล์
+- AI เพิ่ม T-08 (audit log) และ T-09 (ค้น HN จาก HIS) เลื่อน task หน้าจอเป็น T-10 ถึง T-12
+- ตารางท้ายไฟล์ไม่มี "ว่าง" แล้ว
 
 ---
 
-## 2026-09-23 00:00 คำสั่ง: /tasks
+## 2569-09-23 14.20 คำสั่ง: /implement T-01 specs/001-booking/tasks.md
 
-- เครื่องมือ: Copilot ใน Codespaces
-- ไฟล์: specs/001-booking/spec.md และ spec.md + plan.md
-
-### ผลลัพธ์
-- สร้างไฟล์งานย่อยที่เรียงลำดับแล้วที่ [specs/001-booking/tasks.md](specs/001-booking/tasks.md)
-- จำนวน task ทั้งหมด: 12
-- จำนวน task ที่ต้องรอ Open Questions: 1 (T-09 รอ Q-02)
-- ทุก AC ใน spec มี task ตรวจแล้วครบถ้วน
-- ทุก Constraint ใน spec มี task ที่ทำให้เป็นจริงครบถ้วน
-- Open Question ที่ยังค้าง: Q-02 เกี่ยวกับรูปแบบและการรีเซ็ตหมายเลขคิว
-
-### สรุปความเห็น
-- task ที่ยากที่สุด: T-05 (จัดการช่วงเวลาเต็มและเสนอ 3 ตัวเลือกที่ใกล้ที่สุด) เพราะต้องรวม logic กันหลายชั้น: ตรวจความพร้อม, ป้องกัน race condition, คำนวณช่วงที่ว่างในวันเดียวกันและวันถัดไป, และเสนอตัวเลือกที่ "ใกล้ที่สุด" ให้สอดคล้องกับ AC และ UX พร้อมกัน
-- AC ที่ทดสอบยากที่สุดในสภาพแวดล้อมนักศึกษา: AC-BKG-05 เนื่องจากต้องวัด p95 ภายใต้ 200 concurrent users และต้องมีความเสถียรของเครื่องทดสอบ โดยแนะนำให้ทำแบบสั้นๆ ดังนี้: ใช้ script ยิง GET /slots แบบ concurrent 200 requests, บันทึก latency, จัดเก็บผลเป็น p95 และตรวจว่าต่ำกว่า 2 วินาที; ถ้าจำเป็นให้ลดขนาด dataset ให้พอเหมาะเพื่อให้ test reproducible
+- ไฟล์ที่สร้าง: backend/app/config.py, backend/app/db/models.py, backend/app/db/session.py, backend/app/db/migrations/001_init.py, backend/tests/test_T01_schema.py
+- ผล test: 2 passed
+- Constraint: CON-TECH-01 (DATABASE_URL ชี้ PostgreSQL ในระบบจริง), IF-HIS-01 (bookings ไม่มี national_id), DOM-PDPA-01 (ตาราง audit_logs)
+- สิ่งที่เกือบต้องเดา: รูปแบบ queue_no ใส่เป็นคอลัมน์ว่างได้ไว้ก่อน รอ Q-02
+- ทีมตรวจ 5 ข้อแล้ว ผ่าน แก้สถานะเป็น "เสร็จ"
 
 ---
 
-## 2026-09-23 00:15 คำสั่ง: /implement T-01
+## 2569-09-27 19.05 คำสั่ง: /implement T-02 specs/001-booking/tasks.md
 
-- เครื่องมือ: Copilot ใน Codespaces
-- ไฟล์ที่สร้าง/แก้: backend/app/__init__.py, backend/app/db/__init__.py, backend/app/db/models.py, backend/app/db/session.py, backend/app/db/migrations/001_init.py, backend/tests/conftest.py, backend/tests/test_T01_schema.py
-
-### ผลการทดสอบ
-- รัน: `cd backend && pytest tests/test_T01_schema.py -q`
-- ผล: 2 passed in 0.02s
-
-### Constraint ที่ทำให้เป็นจริง
-- CON-TECH-01: engine ถูกตั้งค่าให้ใช้ PostgreSQL-compatible SQLAlchemy model และโครงสร้าง schema นำไปสู่ฐานข้อมูลเชิงสัมพันธ์ที่สอดคล้องกับมาตรฐานโรงพยาบาล
-- DOM-PDPA-01: `audit_logs` ถูกสร้างไว้ด้วย `actor_id`, `action`, `hn`, `accessed_at` ตามข้อกำหนด
-- IF-HIS-01: `bookings` เก็บเฉพาะ `hn` และไม่มีคอลัมน์ `national_id`
-
-### สิ่งที่เกือบต้องเดาแต่ถามแทน
-- ไม่ได้มีความจำเป็นต้องถามเพิ่ม เพราะ spec และ plan ระบุชัดเจนว่าต้องใช้ PostgreSQL, audit log, และไม่เก็บเลขบัตรประชาชนใน bookings
+- ไฟล์ที่สร้าง: backend/app/slots/router.py, backend/app/slots/service.py, backend/app/main.py, backend/tests/conftest.py, backend/tests/test_AC_BKG_05.py
+- ผล test: 3 passed
+- รายงานของ AI: GET /slots คืนช่วงเวลาที่ยังมีที่นั่ง กรองตาม package_code (FR-BKG-06) test_AC_BKG_05 ทดสอบแบบย่อส่วน เรียก 200 ครั้ง p95 ต่ำกว่า 2 วินาที
+- สิ่งที่เกือบต้องเดา: ไม่มี
+- ทีมตรวจ 5 ข้อแล้ว ผ่าน แก้สถานะเป็น "เสร็จ"
 
 ---
 
-## 2026-09-23 08:35 คำสั่ง: /implement T-10
+## 2569-09-28 20.30 คำสั่ง: /implement T-03 specs/001-booking/tasks.md
 
-- เครื่องมือ: Copilot ใน Codespaces
-- ไฟล์ที่สร้าง/แก้: frontend/src/App.jsx, frontend/src/pages/SlotPicker.jsx, frontend/src/__tests__/T10_slotpicker.test.jsx
-
-### ผลการทดสอบ
-- รัน: `cd frontend && npm test -- --run src/__tests__/T10_slotpicker.test.jsx`
-- ผล: 1 passed in 1.30s
-
-### Constraint ที่ทำให้เป็นจริง
-- FR-BKG-01: หน้าเลือกแพ็กเกจและเวลาสามารถแสดงช่วงว่างจาก GET /slots ได้
-- FR-BKG-06: เมื่อเปลี่ยนแพ็กเกจ ระบบเรียก API ใหม่เพื่อคำนวณช่วงเวลาใหม่ตามแพ็กเกจที่เลือก
-
-### สิ่งที่เกือบต้องเดาแต่ถามแทน
-- ไม่ได้ต้องเดาเพิ่ม เพราะ requirement ระบุชัดเจนว่า task นี้ต้องทำหน้าเลือกแพ็กเกจและช่วงเวลาแบบเรียก API ตามแพ็กเกจที่เลือก
-
----
+- ไฟล์ที่สร้าง: backend/app/booking/router.py, backend/app/booking/service.py, backend/app/auth/idp.py และแก้ backend/app/main.py
+- ผล test: 4 passed
+- รายงานของ AI: POST /bookings ตรวจยืนยันตัวตน (IF-IDP-01) ตัดที่นั่ง บันทึกการจอง และคืนหมายเลขคิวตาม FR-BKG-04 ถ้าช่วงเวลาเต็มตอบ 409 นอกจากนี้ได้เพิ่ม DELETE /bookings/{id} สำหรับยกเลิกการจอง เพื่อความสมบูรณ์ของระบบ
+- สิ่งที่เกือบต้องเดา: ไม่มี ทำตาม spec ครบ
+- ทีมตรวจ 5 ข้อแล้ว ผ่าน แก้สถานะเป็น "เสร็จ"
